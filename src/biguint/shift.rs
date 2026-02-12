@@ -9,7 +9,7 @@ use core::ops::{Shl, ShlAssign, Shr, ShrAssign};
 use num_traits::{PrimInt, Zero};
 
 #[inline]
-fn biguint_shl<T: PrimInt>(n: Cow<'_, BigUint>, shift: T) -> BigUint {
+pub fn biguint_shl<T: PrimInt>(n: Cow<'_, BigUint>, shift: T) -> BigUint {
     if shift < T::zero() {
         panic!("attempt to shift left with negative");
     }
@@ -51,7 +51,7 @@ fn biguint_shl2(n: Cow<'_, BigUint>, digits: usize, shift: u8) -> BigUint {
 }
 
 #[inline]
-fn biguint_shr<T: PrimInt>(n: Cow<'_, BigUint>, shift: T) -> BigUint {
+pub fn biguint_shr<T: PrimInt>(n: Cow<'_, BigUint>, shift: T) -> BigUint {
     if shift < T::zero() {
         panic!("attempt to shift right with negative");
     }

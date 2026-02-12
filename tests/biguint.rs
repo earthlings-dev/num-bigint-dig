@@ -1,6 +1,6 @@
-use num_bigint::Sign::Plus;
-use num_bigint::{BigInt, ToBigInt};
-use num_bigint::{BigUint, ToBigUint};
+use num_bigint_dig::Sign::Plus;
+use num_bigint_dig::{BigInt, ToBigInt};
+use num_bigint_dig::{BigUint, ToBigUint};
 use num_integer::Integer;
 
 use std::cmp::Ordering::{Equal, Greater, Less};

@@ -1,4 +1,4 @@
-use num_bigint::BigUint;
+use num_bigint_dig::BigUint;
 use num_traits::{One, ToPrimitive, Zero};
 
 use std::panic::catch_unwind;

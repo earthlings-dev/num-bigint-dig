@@ -13,19 +13,20 @@ use core::str;
 use num_integer::{Integer, Roots};
 use num_traits::{ConstZero, Num, One, Pow, ToPrimitive, Unsigned, Zero};
 
-mod addition;
-mod division;
-mod multiplication;
-mod subtraction;
+pub(crate) mod addition;
+pub(crate) mod division;
+pub(crate) mod multiplication;
+pub(crate) mod subtraction;
 
 mod arbitrary;
 mod bits;
 mod convert;
 mod iter;
-mod monty;
+pub(crate) mod monty;
 mod power;
 mod serde;
-mod shift;
+pub(crate) mod shift;
+mod zeroize;
 
 pub(crate) use self::convert::to_str_radix_reversed;
 pub use self::iter::{U32Digits, U64Digits};
@@ -84,7 +85,7 @@ impl Ord for BigUint {
 }
 
 #[inline]
-fn cmp_slice(a: &[BigDigit], b: &[BigDigit]) -> Ordering {
+pub fn cmp_slice(a: &[BigDigit], b: &[BigDigit]) -> Ordering {
     debug_assert!(a.last() != Some(&0));
     debug_assert!(b.last() != Some(&0));
 
@@ -577,7 +578,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// assert_eq!(BigUint::from_bytes_be(b"A"),
     ///            BigUint::parse_bytes(b"65", 10).unwrap());
@@ -621,7 +622,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigUint, ToBigUint};
+    /// use num_bigint_dig::{BigUint, ToBigUint};
     ///
     /// assert_eq!(BigUint::parse_bytes(b"1234", 10), ToBigUint::to_biguint(&1234));
     /// assert_eq!(BigUint::parse_bytes(b"ABCD", 16), ToBigUint::to_biguint(&0xABCD));
@@ -643,7 +644,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigUint};
+    /// use num_bigint_dig::{BigUint};
     ///
     /// let inbase190 = &[15, 33, 125, 12, 14];
     /// let a = BigUint::from_radix_be(inbase190, 190).unwrap();
@@ -663,7 +664,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigUint};
+    /// use num_bigint_dig::{BigUint};
     ///
     /// let inbase190 = &[14, 12, 125, 33, 15];
     /// let a = BigUint::from_radix_be(inbase190, 190).unwrap();
@@ -678,7 +679,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// let i = BigUint::parse_bytes(b"1125", 10).unwrap();
     /// assert_eq!(i.to_bytes_be(), vec![4, 101]);
@@ -695,7 +696,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// let i = BigUint::parse_bytes(b"1125", 10).unwrap();
     /// assert_eq!(i.to_bytes_le(), vec![101, 4]);
@@ -715,7 +716,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// assert_eq!(BigUint::from(1125u32).to_u32_digits(), vec![1125]);
     /// assert_eq!(BigUint::from(4294967295u32).to_u32_digits(), vec![4294967295]);
@@ -733,7 +734,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// assert_eq!(BigUint::from(1125u32).to_u64_digits(), vec![1125]);
     /// assert_eq!(BigUint::from(4294967295u32).to_u64_digits(), vec![4294967295]);
@@ -752,7 +753,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// assert_eq!(BigUint::from(1125u32).iter_u32_digits().collect::<Vec<u32>>(), vec![1125]);
     /// assert_eq!(BigUint::from(4294967295u32).iter_u32_digits().collect::<Vec<u32>>(), vec![4294967295]);
@@ -770,7 +771,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// assert_eq!(BigUint::from(1125u32).iter_u64_digits().collect::<Vec<u64>>(), vec![1125]);
     /// assert_eq!(BigUint::from(4294967295u32).iter_u64_digits().collect::<Vec<u64>>(), vec![4294967295]);
@@ -789,7 +790,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// let i = BigUint::parse_bytes(b"ff", 16).unwrap();
     /// assert_eq!(i.to_str_radix(16), "ff");
@@ -809,7 +810,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// assert_eq!(BigUint::from(0xFFFFu64).to_radix_be(159),
     ///            vec![2, 94, 27]);
@@ -830,7 +831,7 @@ impl BigUint {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     ///
     /// assert_eq!(BigUint::from(0xFFFFu64).to_radix_le(159),
     ///            vec![27, 94, 2]);
@@ -871,6 +872,21 @@ impl BigUint {
         self
     }
 
+    /// Sets the value to a single digit, reusing existing storage.
+    #[inline]
+    pub(crate) fn set_digit(&mut self, digit: BigDigit) {
+        self.data.clear();
+        if digit != 0 {
+            self.data.push(digit);
+        }
+    }
+
+    /// Returns the digit at position `i`, or 0 if out of range.
+    #[inline]
+    pub(crate) fn get_limb(&self, i: usize) -> BigDigit {
+        self.data.get(i).copied().unwrap_or(0)
+    }
+
     /// Returns `self ^ exponent`.
     pub fn pow(&self, exponent: u32) -> Self {
         Pow::pow(self, exponent)
@@ -889,7 +905,7 @@ impl BigUint {
     /// The solution exists if and only if `gcd(self, modulus) == 1`.
     ///
     /// ```
-    /// use num_bigint::BigUint;
+    /// use num_bigint_dig::BigUint;
     /// use num_traits::{One, Zero};
     ///
     /// let m = BigUint::from(383_u32);

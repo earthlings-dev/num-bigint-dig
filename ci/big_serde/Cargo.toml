@@ -5,7 +5,7 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-num-bigint = { workspace = true, features = ["serde"] }
+num-bigint-dig = { workspace = true, features = ["serde"] }
 num-traits = { workspace = true }
 serde = { workspace = true }
 serde_test = { workspace = true }

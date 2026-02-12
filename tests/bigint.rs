@@ -1,6 +1,6 @@
-use num_bigint::BigUint;
-use num_bigint::Sign::{Minus, NoSign, Plus};
-use num_bigint::{BigInt, ToBigInt};
+use num_bigint_dig::BigUint;
+use num_bigint_dig::Sign::{Minus, NoSign, Plus};
+use num_bigint_dig::{BigInt, ToBigInt};
 
 use std::cmp::Ordering::{Equal, Greater, Less};
 use std::collections::hash_map::RandomState;

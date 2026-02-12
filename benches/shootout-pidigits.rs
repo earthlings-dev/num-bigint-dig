@@ -41,7 +41,7 @@
 use std::io;
 use std::str::FromStr;
 
-use num_bigint::BigInt;
+use num_bigint_dig::BigInt;
 use num_integer::Integer;
 use num_traits::{FromPrimitive, One, ToPrimitive, Zero};
 

@@ -9,7 +9,7 @@
 mod torture;
 
 mod biguint {
-    use num_bigint::{BigUint, RandBigInt, RandomBits};
+    use num_bigint_dig::{BigUint, RandBigInt, RandomBits};
     use num_traits::Zero;
     use rand::distr::{Distribution, Uniform};
     use rand::{RngExt, SeedableRng};
@@ -203,7 +203,7 @@ mod biguint {
 }
 
 mod bigint {
-    use num_bigint::{BigInt, RandBigInt, RandomBits};
+    use num_bigint_dig::{BigInt, RandBigInt, RandomBits};
     use num_traits::Zero;
     use rand::distr::Uniform;
     use rand::{RngExt, SeedableRng};

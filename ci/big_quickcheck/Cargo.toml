@@ -5,7 +5,7 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-num-bigint = { workspace = true, features = ["quickcheck"] }
+num-bigint-dig = { workspace = true, features = ["quickcheck"] }
 num-integer = { workspace = true }
 num-traits = { workspace = true }
 quickcheck = { workspace = true }

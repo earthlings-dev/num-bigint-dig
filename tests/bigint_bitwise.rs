@@ -1,4 +1,4 @@
-use num_bigint::{BigInt, Sign, ToBigInt};
+use num_bigint_dig::{BigInt, Sign, ToBigInt};
 use num_traits::ToPrimitive;
 
 enum ValueVec {

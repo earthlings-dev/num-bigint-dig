@@ -615,7 +615,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// assert_eq!(BigInt::from_bytes_be(Sign::Plus, b"A"),
     ///            BigInt::parse_bytes(b"65", 10).unwrap());
@@ -661,7 +661,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, ToBigInt};
+    /// use num_bigint_dig::{BigInt, ToBigInt};
     ///
     /// assert_eq!(BigInt::parse_bytes(b"1234", 10), ToBigInt::to_bigint(&1234));
     /// assert_eq!(BigInt::parse_bytes(b"ABCD", 16), ToBigInt::to_bigint(&0xABCD));
@@ -683,7 +683,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// let inbase190 = vec![15, 33, 125, 12, 14];
     /// let a = BigInt::from_radix_be(Sign::Minus, &inbase190, 190).unwrap();
@@ -704,7 +704,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// let inbase190 = vec![14, 12, 125, 33, 15];
     /// let a = BigInt::from_radix_be(Sign::Minus, &inbase190, 190).unwrap();
@@ -720,7 +720,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{ToBigInt, Sign};
+    /// use num_bigint_dig::{ToBigInt, Sign};
     ///
     /// let i = -1125.to_bigint().unwrap();
     /// assert_eq!(i.to_bytes_be(), (Sign::Minus, vec![4, 101]));
@@ -735,7 +735,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{ToBigInt, Sign};
+    /// use num_bigint_dig::{ToBigInt, Sign};
     ///
     /// let i = -1125.to_bigint().unwrap();
     /// assert_eq!(i.to_bytes_le(), (Sign::Minus, vec![101, 4]));
@@ -751,7 +751,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// assert_eq!(BigInt::from(-1125).to_u32_digits(), (Sign::Minus, vec![1125]));
     /// assert_eq!(BigInt::from(4294967295u32).to_u32_digits(), (Sign::Plus, vec![4294967295]));
@@ -770,7 +770,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// assert_eq!(BigInt::from(-1125).to_u64_digits(), (Sign::Minus, vec![1125]));
     /// assert_eq!(BigInt::from(4294967295u32).to_u64_digits(), (Sign::Plus, vec![4294967295]));
@@ -790,7 +790,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigInt;
+    /// use num_bigint_dig::BigInt;
     ///
     /// assert_eq!(BigInt::from(-1125).iter_u32_digits().collect::<Vec<u32>>(), vec![1125]);
     /// assert_eq!(BigInt::from(4294967295u32).iter_u32_digits().collect::<Vec<u32>>(), vec![4294967295]);
@@ -809,7 +809,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigInt;
+    /// use num_bigint_dig::BigInt;
     ///
     /// assert_eq!(BigInt::from(-1125).iter_u64_digits().collect::<Vec<u64>>(), vec![1125u64]);
     /// assert_eq!(BigInt::from(4294967295u32).iter_u64_digits().collect::<Vec<u64>>(), vec![4294967295u64]);
@@ -828,7 +828,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::ToBigInt;
+    /// use num_bigint_dig::ToBigInt;
     ///
     /// let i = -1125.to_bigint().unwrap();
     /// assert_eq!(i.to_signed_bytes_be(), vec![251, 155]);
@@ -843,7 +843,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::ToBigInt;
+    /// use num_bigint_dig::ToBigInt;
     ///
     /// let i = -1125.to_bigint().unwrap();
     /// assert_eq!(i.to_signed_bytes_le(), vec![155, 251]);
@@ -859,7 +859,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::BigInt;
+    /// use num_bigint_dig::BigInt;
     ///
     /// let i = BigInt::parse_bytes(b"ff", 16).unwrap();
     /// assert_eq!(i.to_str_radix(16), "ff");
@@ -884,7 +884,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// assert_eq!(BigInt::from(-0xFFFFi64).to_radix_be(159),
     ///            (Sign::Minus, vec![2, 94, 27]));
@@ -903,7 +903,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// assert_eq!(BigInt::from(-0xFFFFi64).to_radix_le(159),
     ///            (Sign::Minus, vec![27, 94, 2]));
@@ -919,7 +919,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, Sign};
+    /// use num_bigint_dig::{BigInt, Sign};
     ///
     /// assert_eq!(BigInt::from(1234).sign(), Sign::Plus);
     /// assert_eq!(BigInt::from(-4321).sign(), Sign::Minus);
@@ -935,7 +935,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, BigUint};
+    /// use num_bigint_dig::{BigInt, BigUint};
     /// use num_traits::Zero;
     ///
     /// assert_eq!(BigInt::from(1234).magnitude(), &BigUint::from(1234u32));
@@ -953,7 +953,7 @@ impl BigInt {
     /// # Examples
     ///
     /// ```
-    /// use num_bigint::{BigInt, BigUint, Sign};
+    /// use num_bigint_dig::{BigInt, BigUint, Sign};
     ///
     /// assert_eq!(BigInt::from(1234).into_parts(), (Sign::Plus, BigUint::from(1234u32)));
     /// assert_eq!(BigInt::from(-4321).into_parts(), (Sign::Minus, BigUint::from(4321u32)));
@@ -1031,7 +1031,7 @@ impl BigInt {
     /// and it exists if and only if `gcd(self, modulus) == 1`.
     ///
     /// ```
-    /// use num_bigint::BigInt;
+    /// use num_bigint_dig::BigInt;
     /// use num_integer::Integer;
     /// use num_traits::{One, Zero};
     ///
@@ -1101,6 +1101,19 @@ impl BigInt {
     /// or `None` if the entire number is zero.
     pub fn trailing_zeros(&self) -> Option<u64> {
         self.data.trailing_zeros()
+    }
+
+    /// Returns the digit at position `i` of the magnitude, or 0 if out of range.
+    #[inline]
+    pub(crate) fn get_limb(&self, i: usize) -> BigDigit {
+        self.data.get_limb(i)
+    }
+
+    /// Sets the value to a single digit with the given sign.
+    #[inline]
+    pub(crate) fn assign_single_digit(&mut self, digit: BigDigit, sign: Sign) {
+        self.data.set_digit(digit);
+        self.sign = if digit == 0 { NoSign } else { sign };
     }
 
     /// Returns whether the bit in position `bit` is set,
@@ -1222,4 +1235,12 @@ fn test_assign_from_slice() {
     check(Plus, 0, NoSign, 0);
     check(Minus, 1, Minus, 1);
     check(NoSign, 1, NoSign, 0);
+}
+
+#[cfg(feature = "zeroize")]
+impl zeroize::Zeroize for BigInt {
+    fn zeroize(&mut self) {
+        self.sign = NoSign;
+        self.data.zeroize();
+    }
 }

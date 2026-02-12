@@ -17,7 +17,7 @@ use core::arch::x86 as arch;
 #[cfg(target_arch = "x86_64")]
 cfg_64!(
     #[inline]
-    fn sbb(borrow: u8, a: u64, b: u64, out: &mut u64) -> u8 {
+    pub fn sbb(borrow: u8, a: u64, b: u64, out: &mut u64) -> u8 {
         arch::_subborrow_u64(borrow, a, b, out)
     }
 );
@@ -25,7 +25,7 @@ cfg_64!(
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 cfg_32!(
     #[inline]
-    fn sbb(borrow: u8, a: u32, b: u32, out: &mut u32) -> u8 {
+    pub fn sbb(borrow: u8, a: u32, b: u32, out: &mut u32) -> u8 {
         // Safety: There are absolutely no safety concerns with calling `_subborrow_u32`.
         // It's just unsafe for API consistency with other intrinsics.
         unsafe { arch::_subborrow_u32(borrow, a, b, out) }
@@ -36,14 +36,14 @@ cfg_32!(
 // (copied from the standard library's `borrowing_sub`)
 #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
 #[inline]
-fn sbb(borrow: u8, lhs: BigDigit, rhs: BigDigit, out: &mut BigDigit) -> u8 {
+pub fn sbb(borrow: u8, lhs: BigDigit, rhs: BigDigit, out: &mut BigDigit) -> u8 {
     let (a, b) = lhs.overflowing_sub(rhs);
     let (c, d) = a.overflowing_sub(borrow as BigDigit);
     *out = c;
     u8::from(b || d)
 }
 
-pub(super) fn sub2(a: &mut [BigDigit], b: &[BigDigit]) {
+pub fn sub2(a: &mut [BigDigit], b: &[BigDigit]) {
     let mut borrow = 0;
 
     let len = Ord::min(a.len(), b.len());
@@ -72,7 +72,7 @@ pub(super) fn sub2(a: &mut [BigDigit], b: &[BigDigit]) {
 
 // Only for the Sub impl. `a` and `b` must have same length.
 #[inline]
-fn __sub2rev(a: &[BigDigit], b: &mut [BigDigit]) -> u8 {
+pub fn __sub2rev(a: &[BigDigit], b: &mut [BigDigit]) -> u8 {
     debug_assert!(b.len() == a.len());
 
     let mut borrow = 0;
@@ -84,7 +84,7 @@ fn __sub2rev(a: &[BigDigit], b: &mut [BigDigit]) -> u8 {
     borrow
 }
 
-fn sub2rev(a: &[BigDigit], b: &mut [BigDigit]) {
+pub fn sub2rev(a: &[BigDigit], b: &mut [BigDigit]) {
     debug_assert!(b.len() >= a.len());
 
     let len = Ord::min(a.len(), b.len());

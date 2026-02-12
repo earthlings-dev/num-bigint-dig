@@ -10,7 +10,7 @@
 
 #![cfg(test)]
 
-use num_bigint::{BigInt, BigUint};
+use num_bigint_dig::{BigInt, BigUint};
 use num_traits::{One, Zero};
 use serde::{Serialize, de::DeserializeOwned};
 use serde_test::{Token, assert_de_tokens, assert_ser_tokens, assert_tokens};

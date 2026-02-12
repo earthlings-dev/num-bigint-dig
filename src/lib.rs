@@ -8,7 +8,11 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! Big Integer Types for Rust
+//! Big Integer Types for Rust (with cryptographic extensions)
+//!
+//! `num-bigint-dig` is a fork of [`num-bigint`](https://crates.io/crates/num-bigint)
+//! that adds cryptography-focused features: primality testing, extended GCD,
+//! modular inverse, Jacobi symbol computation, and random prime generation.
 //!
 //! * A [`BigUint`] is unsigned and represented as a vector of digits.
 //! * A [`BigInt`] is signed and is a combination of [`BigUint`] and [`Sign`].
@@ -20,7 +24,7 @@
 //!
 //! ```rust
 //! # fn main() {
-//! use num_bigint::BigUint;
+//! use num_bigint_dig::BigUint;
 //! use num_traits::One;
 //!
 //! // Calculate large fibonacci numbers.
@@ -43,7 +47,7 @@
 //! It's easy to generate large random numbers:
 //!
 //! ```rust,ignore
-//! use num_bigint::{ToBigInt, RandBigInt};
+//! use num_bigint_dig::{ToBigInt, RandBigInt};
 //!
 //! let mut rng = rand::rng();
 //! let a = rng.gen_bigint(1000);
@@ -62,25 +66,25 @@
 //!
 //! The `std` crate feature is enabled by default, which enables [`std::error::Error`]
 //! implementations and some internal use of floating point approximations. This can be disabled by
-//! depending on `num-bigint` with `default-features = false`. Either way, the `alloc` crate is
+//! depending on `num-bigint-dig` with `default-features = false`. Either way, the `alloc` crate is
 //! always required for heap allocation of the `BigInt`/`BigUint` digits.
 //!
 //! ### Random Generation
 //!
-//! `num-bigint` supports the generation of random big integers when the `rand`
+//! `num-bigint-dig` supports the generation of random big integers when the `rand`
 //! feature is enabled. To enable it include rand as
 //!
 //! ```toml
 //! rand = "0.10"
-//! num-bigint = { version = "0.4", features = ["rand"] }
+//! num-bigint-dig = { version = "0.10", features = ["rand"] }
 //! ```
 //!
-//! Note that you must use the version of `rand` that `num-bigint` is compatible
+//! Note that you must use the version of `rand` that `num-bigint-dig` is compatible
 //! with: `0.10`.
 //!
 //! ### Arbitrary Big Integers
 //!
-//! `num-bigint` supports `arbitrary` and `quickcheck` features to implement
+//! `num-bigint-dig` supports `arbitrary` and `quickcheck` features to implement
 //! [`arbitrary::Arbitrary`] and [`quickcheck::Arbitrary`], respectively, for both `BigInt` and
 //! `BigUint`. These are useful for fuzzing and other forms of randomized testing.
 //!
@@ -90,13 +94,18 @@
 //! [`Deserialize`][serde::Deserialize] for both `BigInt` and `BigUint`. Their serialized data is
 //! generated portably, regardless of platform differences like the internal digit size.
 //!
+//! ### Low-level Algorithms
+//!
+//! The [`algorithms`] module exposes the low-level arithmetic and cryptographic
+//! primitives (addition, subtraction, multiplication, division, Montgomery
+//! exponentiation, etc.) for direct use on digit slices.
 //!
 //! ## Compatibility
 //!
-//! The `num-bigint` crate is tested for rustc 1.93 and greater.
+//! The `num-bigint-dig` crate is tested for rustc 1.93 and greater.
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
-#![doc(html_root_url = "https://docs.rs/num-bigint/0.4")]
+#![doc(html_root_url = "https://docs.rs/num-bigint-dig/0.10")]
 #![no_std]
 
 #[macro_use]
@@ -110,9 +119,16 @@ use core::fmt;
 #[macro_use]
 mod macros;
 
+pub mod algorithms;
 mod bigint;
 mod bigrand;
 mod biguint;
+#[cfg(feature = "prime")]
+#[cfg_attr(docsrs, doc(cfg(feature = "prime")))]
+pub mod prime;
+pub mod traits;
+
+pub use crate::traits::*;
 
 #[cfg(target_pointer_width = "32")]
 type UsizePromotion = u32;
@@ -222,6 +238,10 @@ pub use crate::bigint::ToBigInt;
 #[cfg(feature = "rand")]
 #[cfg_attr(docsrs, doc(cfg(feature = "rand")))]
 pub use crate::bigrand::{RandBigInt, RandomBits, UniformBigInt, UniformBigUint};
+
+#[cfg(feature = "prime")]
+#[cfg_attr(docsrs, doc(cfg(feature = "prime")))]
+pub use crate::bigrand::RandPrime;
 
 mod big_digit {
     // A [`BigDigit`] is a [`BigUint`]'s composing element.

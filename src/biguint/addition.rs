@@ -17,7 +17,7 @@ use core::arch::x86 as arch;
 #[cfg(target_arch = "x86_64")]
 cfg_64!(
     #[inline]
-    fn adc(carry: u8, a: u64, b: u64, out: &mut u64) -> u8 {
+    pub fn adc(carry: u8, a: u64, b: u64, out: &mut u64) -> u8 {
         arch::_addcarry_u64(carry, a, b, out)
     }
 );
@@ -25,7 +25,7 @@ cfg_64!(
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 cfg_32!(
     #[inline]
-    fn adc(carry: u8, a: u32, b: u32, out: &mut u32) -> u8 {
+    pub fn adc(carry: u8, a: u32, b: u32, out: &mut u32) -> u8 {
         // Safety: There are absolutely no safety concerns with calling `_addcarry_u32`.
         // It's just unsafe for API consistency with other intrinsics.
         unsafe { arch::_addcarry_u32(carry, a, b, out) }
@@ -36,7 +36,7 @@ cfg_32!(
 // (copied from the standard library's `carrying_add`)
 #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
 #[inline]
-fn adc(carry: u8, lhs: BigDigit, rhs: BigDigit, out: &mut BigDigit) -> u8 {
+pub fn adc(carry: u8, lhs: BigDigit, rhs: BigDigit, out: &mut BigDigit) -> u8 {
     let (a, b) = lhs.overflowing_add(rhs);
     let (c, d) = a.overflowing_add(carry as BigDigit);
     *out = c;
@@ -50,7 +50,7 @@ fn adc(carry: u8, lhs: BigDigit, rhs: BigDigit, out: &mut BigDigit) -> u8 {
 ///
 /// The caller _must_ ensure that `a` is at least as long as `b`.
 #[inline]
-pub(super) fn __add2(a: &mut [BigDigit], b: &[BigDigit]) -> BigDigit {
+pub fn __add2(a: &mut [BigDigit], b: &[BigDigit]) -> BigDigit {
     debug_assert!(a.len() >= b.len());
 
     let mut carry = 0;
@@ -77,7 +77,7 @@ pub(super) fn __add2(a: &mut [BigDigit], b: &[BigDigit]) -> BigDigit {
 ///
 /// The caller _must_ ensure that a is big enough to store the result - typically this means
 /// resizing a to max(a.len(), b.len()) + 1, to fit a possible carry.
-pub(super) fn add2(a: &mut [BigDigit], b: &[BigDigit]) {
+pub fn add2(a: &mut [BigDigit], b: &[BigDigit]) {
     let carry = __add2(a, b);
 
     debug_assert!(carry == 0);

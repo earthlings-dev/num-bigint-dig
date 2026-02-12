@@ -6,7 +6,7 @@
 
 #![cfg(test)]
 
-use num_bigint::{BigInt, BigUint};
+use num_bigint_dig::{BigInt, BigUint};
 use num_integer::Integer;
 use num_traits::{Num, One, Signed, ToPrimitive, Zero};
 use quickcheck::{Gen, QuickCheck, TestResult};

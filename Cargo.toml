@@ -6,10 +6,10 @@ edition = "2024"
 rust-version = "1.93"
 
 [workspace.dependencies]
-num-bigint = { path = "." }
+num-bigint-dig = { path = "." }
 num-integer = { version = "0.1.46", default-features = false, features = ["i128"] }
 num-traits = { version = "0.2.19", default-features = false, features = ["i128"] }
-rand = { version = "0.10", default-features = false }
+rand = { path = "../rand", default-features = false }
 rand_chacha = "0.10"
 rand_isaac = "0.5"
 rand_xorshift = "0.5"
@@ -20,16 +20,16 @@ quickcheck_macros = "1"
 arbitrary = { version = "1", default-features = false }
 
 [package]
-authors = ["The Rust Project Developers"]
-description = "Big integer implementation for Rust"
-documentation = "https://docs.rs/num-bigint"
-homepage = "https://github.com/rust-num/num-bigint"
-keywords = ["mathematics", "numerics", "bignum"]
-categories = ["algorithms", "data-structures", "science"]
+authors = ["dignifiedquire <dignifiedquire@gmail.com>", "The Rust Project Developers"]
+description = "Big integer implementation for Rust with cryptographic extensions"
+documentation = "https://docs.rs/num-bigint-dig"
+homepage = "https://github.com/earthlings-dev/num-bigint-dig"
+keywords = ["mathematics", "numerics", "bignum", "cryptography"]
+categories = ["algorithms", "data-structures", "science", "cryptography"]
 license = "MIT OR Apache-2.0"
-name = "num-bigint"
-repository = "https://github.com/rust-num/num-bigint"
-version = "0.4.6"
+name = "num-bigint-dig"
+repository = "https://github.com/earthlings-dev/num-bigint-dig"
+version = "0.10.0"
 readme = "README.md"
 exclude = ["/ci/*", "/.github/*"]
 edition.workspace = true
@@ -42,9 +42,11 @@ arbitrary = ["dep:arbitrary"]
 quickcheck = ["dep:quickcheck"]
 rand = ["dep:rand"]
 serde = ["dep:serde"]
+prime = ["rand", "std", "rand/std_rng", "rand/thread_rng"]
+zeroize = ["dep:zeroize"]
 
 [package.metadata.docs.rs]
-features = ["std", "serde", "rand", "quickcheck", "arbitrary"]
+features = ["std", "serde", "rand", "quickcheck", "arbitrary", "prime", "zeroize"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 [[bench]]
@@ -84,3 +86,13 @@ optional = true
 [dependencies.arbitrary]
 workspace = true
 optional = true
+
+[dependencies.zeroize]
+version = "1.8"
+default-features = false
+optional = true
+
+[dev-dependencies]
+rand_xorshift.workspace = true
+rand_chacha.workspace = true
+rand_isaac.workspace = true

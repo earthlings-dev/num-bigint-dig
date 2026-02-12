@@ -10,7 +10,7 @@ use core::ops::{Div, DivAssign, Rem, RemAssign};
 use num_integer::Integer;
 use num_traits::{CheckedDiv, CheckedEuclid, Euclid, One, ToPrimitive, Zero};
 
-pub(super) const FAST_DIV_WIDE: bool = cfg!(any(target_arch = "x86", target_arch = "x86_64"));
+pub const FAST_DIV_WIDE: bool = cfg!(any(target_arch = "x86", target_arch = "x86_64"));
 
 /// Divide a two digit numerator by a one digit divisor, returns quotient and remainder:
 ///
@@ -82,7 +82,7 @@ fn div_half(rem: BigDigit, digit: BigDigit, divisor: BigDigit) -> (BigDigit, Big
 }
 
 #[inline]
-pub(super) fn div_rem_digit(mut a: BigUint, b: BigDigit) -> (BigUint, BigDigit) {
+pub fn div_rem_digit(mut a: BigUint, b: BigDigit) -> (BigUint, BigDigit) {
     if b == 0 {
         panic!("attempt to divide by zero")
     }
@@ -158,7 +158,7 @@ fn sub_mul_digit_same_len(a: &mut [BigDigit], b: &[BigDigit], c: BigDigit) -> Bi
     big_digit::MAX - offset_carry
 }
 
-fn div_rem(mut u: BigUint, mut d: BigUint) -> (BigUint, BigUint) {
+pub fn div_rem(mut u: BigUint, mut d: BigUint) -> (BigUint, BigUint) {
     if d.is_zero() {
         panic!("attempt to divide by zero")
     }
@@ -205,7 +205,7 @@ fn div_rem(mut u: BigUint, mut d: BigUint) -> (BigUint, BigUint) {
     }
 }
 
-pub(super) fn div_rem_ref(u: &BigUint, d: &BigUint) -> (BigUint, BigUint) {
+pub fn div_rem_ref(u: &BigUint, d: &BigUint) -> (BigUint, BigUint) {
     if d.is_zero() {
         panic!("attempt to divide by zero")
     }

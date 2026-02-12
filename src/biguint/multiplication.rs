@@ -12,12 +12,7 @@ use core::ops::{Mul, MulAssign};
 use num_traits::{CheckedMul, FromPrimitive, One, Zero};
 
 #[inline]
-pub(super) fn mac_with_carry(
-    a: BigDigit,
-    b: BigDigit,
-    c: BigDigit,
-    acc: &mut DoubleBigDigit,
-) -> BigDigit {
+pub fn mac_with_carry(a: BigDigit, b: BigDigit, c: BigDigit, acc: &mut DoubleBigDigit) -> BigDigit {
     *acc += DoubleBigDigit::from(a);
     *acc += DoubleBigDigit::from(b) * DoubleBigDigit::from(c);
     let lo = *acc as BigDigit;
@@ -35,7 +30,7 @@ fn mul_with_carry(a: BigDigit, b: BigDigit, acc: &mut DoubleBigDigit) -> BigDigi
 
 /// Three argument multiply accumulate:
 /// acc += b * c
-fn mac_digit(acc: &mut [BigDigit], b: &[BigDigit], c: BigDigit) {
+pub fn mac_digit(acc: &mut [BigDigit], b: &[BigDigit], c: BigDigit) {
     if c == 0 {
         return;
     }
@@ -64,7 +59,7 @@ fn bigint_from_slice(slice: &[BigDigit]) -> BigInt {
 /// Three argument multiply accumulate:
 /// acc += b * c
 #[allow(clippy::many_single_char_names)]
-fn mac3(mut acc: &mut [BigDigit], mut b: &[BigDigit], mut c: &[BigDigit]) {
+pub fn mac3(mut acc: &mut [BigDigit], mut b: &[BigDigit], mut c: &[BigDigit]) {
     // Least-significant zeros have no effect on the output.
     if let Some(&0) = b.first() {
         if let Some(nz) = b.iter().position(|&d| d != 0) {
@@ -407,7 +402,7 @@ fn mac3(mut acc: &mut [BigDigit], mut b: &[BigDigit], mut c: &[BigDigit]) {
     }
 }
 
-fn mul3(x: &[BigDigit], y: &[BigDigit]) -> BigUint {
+pub fn mul3(x: &[BigDigit], y: &[BigDigit]) -> BigUint {
     let len = x.len() + y.len() + 1;
     let mut prod = BigUint { data: vec![0; len] };
 
@@ -415,7 +410,7 @@ fn mul3(x: &[BigDigit], y: &[BigDigit]) -> BigUint {
     prod.normalized()
 }
 
-fn scalar_mul(a: &mut BigUint, b: BigDigit) {
+pub fn scalar_mul(a: &mut BigUint, b: BigDigit) {
     match b {
         0 => a.set_zero(),
         1 => {}
@@ -435,7 +430,7 @@ fn scalar_mul(a: &mut BigUint, b: BigDigit) {
     }
 }
 
-fn sub_sign(mut a: &[BigDigit], mut b: &[BigDigit]) -> (Sign, BigUint) {
+pub fn sub_sign(mut a: &[BigDigit], mut b: &[BigDigit]) -> (Sign, BigUint) {
     // Normalize:
     if let Some(&0) = a.last() {
         a = &a[..a.iter().rposition(|&x| x != 0).map_or(0, |i| i + 1)];
