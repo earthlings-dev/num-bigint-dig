@@ -93,4 +93,15 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_mod_inverse_negative_borrowed_modulus() {
+        let element = BigInt::from_i64(-10).unwrap();
+        let modulus = BigInt::from_i64(-13).unwrap();
+
+        let inverse = element.clone().mod_inverse(&modulus).unwrap();
+        let positive_modulus = BigInt::from(modulus.magnitude().clone());
+
+        assert_eq!((&inverse * &element).mod_floor(&positive_modulus), BigInt::one());
+    }
 }

@@ -67,14 +67,16 @@ impl ModInverse<&BigInt> for BigInt {
     type Output = BigInt;
 
     fn mod_inverse(self, m: &BigInt) -> Option<BigInt> {
+        let modulus = m.magnitude().clone();
+
         if self.is_negative() {
-            let v = self.mod_floor(m).to_biguint().unwrap();
-            mod_inverse(Cow::Owned(v), Cow::Owned(m.to_biguint().unwrap()))
+            let v = self
+                .mod_floor(&BigInt::from(modulus.clone()))
+                .to_biguint()
+                .unwrap();
+            mod_inverse(Cow::Owned(v), Cow::Owned(modulus))
         } else {
-            mod_inverse(
-                Cow::Owned(self.into_parts().1),
-                Cow::Owned(m.to_biguint().unwrap()),
-            )
+            mod_inverse(Cow::Owned(self.into_parts().1), Cow::Owned(modulus))
         }
     }
 }
